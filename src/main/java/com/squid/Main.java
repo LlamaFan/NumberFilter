@@ -1,13 +1,15 @@
 package com.squid;
 
 public class Main {
+    private static ImagePanel ip;
+    private static Filter filter;
+    private static Window window;
+
     public static void main(String[] args) {
-        new Filter();
-        /*int[][] arr = new int[20][10];
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++)
-                System.out.print(arr[i][j]);
-            System.out.println("");
-        }*/
+        filter = new Filter();
+        ip = new ImagePanel(100);
+        window = new Window(ip);
+
+        ip.repaint();
     }
 }

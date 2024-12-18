@@ -9,9 +9,9 @@ public class Filter {
     private int[][] imageArr;
     private BufferedImage image;
 
-    private final int scale = 50;
-    private double ratX;
-    private double ratY;
+    public final int scale = 100;
+    public double ratX;
+    public double ratY;
 
     private double w;
     private double h;
@@ -37,9 +37,9 @@ public class Filter {
 
         if (w >= h) {
             ratX = scale;
-            ratY = scale * (h / w);
+            ratY = Math.round(scale * (h / w));
         } else {
-            ratX = scale * (w / h);
+            ratX = Math.round(scale * (w / h));
             ratY = scale;
         }
 
