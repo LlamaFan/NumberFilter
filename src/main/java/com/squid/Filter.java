@@ -9,18 +9,18 @@ public class Filter {
     public int[][] imageArr;
     private BufferedImage image;
 
-    public final int scale = 100;
+    public final int scale = 50;
     public double ratX;
     public double ratY;
 
     private double w;
     private double h;
 
-    private final String brightest = "@%#*+=-:. ";
+    private static final String brightest = "@%#*+=-:. ";
 
-    public Filter() {
+    public Filter(String path) {
         try {
-            image = ImageIO.read(new File("src/data/example.jpg"));
+            image = ImageIO.read(new File(path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +62,7 @@ public class Filter {
         return (r + g + b) / 3 * (a / 255);
     }
 
-    private char numberToChar(int num) {
+    public static char numberToChar(int num) {
         return brightest.charAt((int) (((double) num / 255) * (brightest.length() - 1)));
     }
 

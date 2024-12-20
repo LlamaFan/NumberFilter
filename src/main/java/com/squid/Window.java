@@ -9,7 +9,7 @@ public class Window extends JFrame {
         this.ip = ip;
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Terrain Generation");
+        setTitle("Image as letters");
         setResizable(false);
 
         add(ip);
