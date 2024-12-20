@@ -2,7 +2,6 @@ package com.squid;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class ImagePanel extends JPanel {
     private int squaresX;
@@ -20,8 +19,6 @@ public class ImagePanel extends JPanel {
         setBackground(Color.BLACK);
     }
 
-    // Repaints the GUI
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -32,7 +29,6 @@ public class ImagePanel extends JPanel {
         for (int i = 0; i < field.length; i++)
             for (int j = 0; j < field[i].length; j++) {
                 if (field[i][j] != 25) {
-                    //g2.setColor(Color.decode(String.valueOf(field[i][j]))); // Int to hex, but the int won't be translated, so it's blue
                     g2.drawString(String.valueOf(Filter.numberToChar(field[i][j])), j * length, i * length);
                 }
             }
@@ -48,10 +44,5 @@ public class ImagePanel extends JPanel {
 
         for (int i = 0; i < field.length; i++)
             g.drawLine(0, i * length, squaresX * length, i * length);
-    }
-
-    private void createCharImage(char let) {
-        BufferedImage bi = new BufferedImage(length, length, BufferedImage.TYPE_INT_ARGB);
-        //cr
     }
 }

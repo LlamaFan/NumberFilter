@@ -10,7 +10,7 @@ public class Main {
     private static boolean running = true;
 
     public static void main(String[] args) {
-        createNew("src/data/example.jpg");
+        createNew("src/data/icon.png");
 
         while (running) {
             scanForCommand();
