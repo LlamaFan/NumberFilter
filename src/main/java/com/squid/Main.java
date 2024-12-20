@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         filter = new Filter();
-        ip = new ImagePanel(100, 100);
+        ip = new ImagePanel((int) filter.ratX, (int) filter.ratY, filter.imageArr);
         window = new Window(ip);
 
         ip.repaint();

@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Filter {
-    private int[][] imageArr;
+    public int[][] imageArr;
     private BufferedImage image;
 
     public final int scale = 100;
@@ -20,7 +20,7 @@ public class Filter {
 
     public Filter() {
         try {
-            image = ImageIO.read(new File("src/data/example3.jpg"));
+            image = ImageIO.read(new File("src/data/example.jpg"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
