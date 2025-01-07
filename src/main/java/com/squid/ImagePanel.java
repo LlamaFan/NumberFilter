@@ -4,27 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ImagePanel extends JPanel {
-    private int squaresX;
-    private int squaresY;
     private final int length = 10;
+    private Filter f;
 
-    public int[][] field;
+    public ImagePanel(Filter filter) {
+        f = filter;
 
-    public ImagePanel(int squaresX, int squaresY, int[][] image) {
-        this.squaresX = squaresX;
-        this.squaresY = squaresY;
-        field = image;
-
-        setPreferredSize(new Dimension(squaresX * length, squaresY * length));
+        setPreferredSize(new Dimension((int) (f.ratX * length), (int) (f.ratY * length)));
         setBackground(Color.BLACK);
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
 
-        paintSign((Graphics2D) g);
-        //paintGray((Graphics2D) g);
+        if ((f.gray))
+            paintGray((Graphics2D) g);
+        else
+            paintSign((Graphics2D) g);
 
         g.setColor(Color.darkGray);
         //drawLine(g);
@@ -35,27 +31,27 @@ public class ImagePanel extends JPanel {
         g2.setFont(new Font("Basic Latin", Font.PLAIN, length)); // I don't know how else to adjust the size
         g2.setColor(Color.white);
 
-        for (int i = 0; i < field.length; i++)
-            for (int j = 0; j < field[i].length; j++)
-                if (field[i][j] > 0)
-                    g2.drawString(String.valueOf(Filter.numberToChar(field[i][j])), j * length, i * length);
+        for (int i = 0; i < f.imgArr.length; i++)
+            for (int j = 0; j < f.imgArr[i].length; j++)
+                if (f.imgArr[i][j] > 0)
+                    g2.drawString(String.valueOf(Filter.numberToChar(f.imgArr[i][j])), j * length, i * length);
     }
 
     private void paintGray(Graphics2D g2) {
-        for (int i = 0; i < field.length; i++)
-            for (int j = 0; j < field[i].length; j++)
-                if (field[i][j] > 0) {
-                    int col = field[i][j];
+        for (int i = 0; i < f.imgArr.length; i++)
+            for (int j = 0; j < f.imgArr[i].length; j++)
+                if (f.imgArr[i][j] > 0) {
+                    int col = f.imgArr[i][j];
                     g2.setColor(new Color(col, col, col));
                     g2.fillRect(j * length, i * length, length, length);
                 }
     }
 
     private void drawLine(Graphics g) {
-        for (int i = 0; i < field[0].length; i++)
-            g.drawLine(i * length, 0, i * length, squaresY * length);
+        for (int i = 0; i < f.imgArr[0].length; i++)
+            g.drawLine(i * length, 0, i * length, (int) (f.ratY * length));
 
-        for (int i = 0; i < field.length; i++)
-            g.drawLine(0, i * length, squaresX * length, i * length);
+        for (int i = 0; i < f.imgArr.length; i++)
+            g.drawLine(0, i * length, (int) (f.ratX * length), i * length);
     }
 }

@@ -6,12 +6,29 @@ import java.io.File;
 import java.io.IOException;
 
 public class Window extends JFrame {
-    private ImagePanel ip;
-
     public Window(ImagePanel ip) {
-        this.ip = ip;
+        setWindow();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        add(ip);
+        pack();
+
+        setVisible(true);
+        ip.repaint();
+    }
+
+    public Window(SettingPanel sp) {
+        setWindow();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        add(sp);
+        pack();
+
+        setVisible(true);
+        sp.repaint();
+    }
+
+    private void setWindow() {
         setTitle("Image as letters");
         setResizable(false);
 
@@ -20,12 +37,5 @@ public class Window extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        add(ip);
-        pack();
-
-        setVisible(true);
-
-        this.ip.repaint();
     }
 }
