@@ -23,19 +23,32 @@ public class ImagePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setFont(new Font("Basic Latin", Font.PLAIN, length)); // I don't know how else to adjust the size
-        g2.setColor(Color.white);
-
-        for (int i = 0; i < field.length; i++)
-            for (int j = 0; j < field[i].length; j++) {
-                if (field[i][j] != 25) {
-                    g2.drawString(String.valueOf(Filter.numberToChar(field[i][j])), j * length, i * length);
-                }
-            }
+        paintSign((Graphics2D) g);
+        //paintGray((Graphics2D) g);
 
         g.setColor(Color.darkGray);
         //drawLine(g);
         g.dispose();
+    }
+
+    private void paintSign(Graphics2D g2) {
+        g2.setFont(new Font("Basic Latin", Font.PLAIN, length)); // I don't know how else to adjust the size
+        g2.setColor(Color.white);
+
+        for (int i = 0; i < field.length; i++)
+            for (int j = 0; j < field[i].length; j++)
+                if (field[i][j] > 0)
+                    g2.drawString(String.valueOf(Filter.numberToChar(field[i][j])), j * length, i * length);
+    }
+
+    private void paintGray(Graphics2D g2) {
+        for (int i = 0; i < field.length; i++)
+            for (int j = 0; j < field[i].length; j++)
+                if (field[i][j] > 0) {
+                    int col = field[i][j];
+                    g2.setColor(new Color(col, col, col));
+                    g2.fillRect(j * length, i * length, length, length);
+                }
     }
 
     private void drawLine(Graphics g) {

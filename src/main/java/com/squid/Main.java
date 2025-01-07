@@ -10,7 +10,7 @@ public class Main {
     private static boolean running = true;
 
     public static void main(String[] args) {
-        createNew("src/data/icon.png");
+        createNew("src/data/test3.jpg");
 
         while (running) {
             scanForCommand();
@@ -47,7 +47,7 @@ public class Main {
 
     private static void createNew(String path) {
         filter = new Filter(path);
-        ip = new ImagePanel((int) filter.ratX, (int) filter.ratY, filter.imageArr);
+        ip = new ImagePanel((int) filter.ratX, (int) filter.ratY, filter.imgArr);
         window = new Window(ip);
 
         ip.repaint();

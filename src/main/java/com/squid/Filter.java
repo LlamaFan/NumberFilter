@@ -6,17 +6,21 @@ import java.io.File;
 import java.io.IOException;
 
 public class Filter {
-    public int[][] imageArr;
+    public int[][] imgArr;
     private BufferedImage image;
 
-    public final int scale = 50;
+    public final int scale = 75;
     public double ratX;
     public double ratY;
 
     private double w;
     private double h;
 
+    private int avgCol;
+    private int deviation;
+
     private static final String brightest = "@%#*+=-:. ";
+    private static final String brightest2 = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,^`'.";
 
     public Filter(String path) {
         try {
@@ -26,8 +30,9 @@ public class Filter {
         }
 
         initArr();
-
         convertImageToArray(image);
+        stdDeviation();
+        overrideBackground();
         printImage();
     }
 
@@ -43,14 +48,25 @@ public class Filter {
             ratY = scale;
         }
 
-        imageArr = new int[(int) ratY][(int) ratX];
+        imgArr = new int[(int) ratY][(int) ratX];
     }
 
     private void convertImageToArray(BufferedImage img) {
-        for (int i = 0; i < imageArr.length; i++)
-            for (int j = 0; j < imageArr[i].length; j++)
-                imageArr[i][j] = grayScale(
-                    img.getRGB((int) (w / ratX * j), (int) (h / ratY * i)));
+        for (int i = 0; i < imgArr.length; i++)
+            for (int j = 0; j < imgArr[i].length; j++)
+                imgArr[i][j] = avgColor(img, (int) (w / ratX * j), (int) (h / ratY * i));
+    }
+
+    private int avgColor(BufferedImage img, int x, int y) {
+        int color = 0;
+        int lenX = (int) Math.round(img.getWidth() / ratX);
+        int lenY = (int) Math.round(img.getHeight() / ratY);
+
+        for (int i = 0; i < lenY; i++)
+            for (int j = 0; j < lenX; j++)
+                color += grayScale(img.getRGB(x + j, y + i));
+
+        return color / (lenX * lenY);
     }
 
     private int grayScale(int pixel) {
@@ -62,16 +78,43 @@ public class Filter {
         return (r + g + b) / 3 * (a / 255);
     }
 
+    private void stdDeviation() {
+        for (int i = 0; i < imgArr.length; i++)
+            for (int j = 0; j < imgArr[i].length - 1; j++) {
+                avgCol += imgArr[i][j];
+                System.out.println(imgArr[i][j]);
+            }
+        avgCol /= (int) (ratX * ratY);
+
+        for (int i = 0; i < imgArr.length; i++)
+            for (int j = 0; j < imgArr[i].length; j++)
+                deviation += (int) Math.pow(imgArr[i][j] - avgCol, 2);
+        deviation = (int) Math.sqrt(deviation / (ratX * ratY));
+
+        System.out.println("Dev: " + deviation);
+        System.out.println("Avg: " + avgCol);
+    }
+
+    private void overrideBackground() {
+        for (int i = 0; i < ratY; i++)
+            for (int j = 0; j < ratX; j++)
+                if (imgArr[i][j] > avgCol - deviation && imgArr[i][j] < avgCol + deviation)
+                    imgArr[i][j] = 0;
+    }
+
     public static char numberToChar(int num) {
-        return brightest.charAt((int) (((double) num / 255) * (brightest.length() - 1)));
+        return brightest2.charAt((int) (((double) num / 255) * (brightest2.length() - 1)));
     }
 
     private void printImage() {
-        for (int i = 0; i < imageArr.length; i++) {
-            for (int j = 0; j < imageArr[i].length; j++)
-                System.out.print(numberToChar(imageArr[i][j]) + "");
+        for (int i = 0; i < imgArr.length; i++) {
+            for (int j = 0; j < imgArr[i].length; j++)
+                if (imgArr[i][j] > 0)
+                    System.out.print(numberToChar(imgArr[i][j]) + "");
+                else
+                    System.out.print(" ");
 
-            System.out.println("");
+            System.out.println();
         }
     }
 }
